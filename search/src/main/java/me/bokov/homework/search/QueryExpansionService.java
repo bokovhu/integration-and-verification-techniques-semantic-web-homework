@@ -24,7 +24,7 @@ public final class QueryExpansionService {
     private OWLReasonerFactory owlReasonerFactory;
     private OWLOntologyManager owlOntologyManager;
 
-    private String ontologyBaseIRI = null;
+    private Set<String> ontologyBaseIRIs = new HashSet<> ();
 
     private QueryExpansionService () {
 
@@ -56,13 +56,13 @@ public final class QueryExpansionService {
         }
 
         this.owlDataFactory = this.owlOntologyManager.getOWLDataFactory ();
-        this.ontologyBaseIRI = this.reasoner.getSubClasses (
+        this.ontologyBaseIRIs = this.reasoner.getSubClasses (
                 this.owlDataFactory.getOWLThing ()
         ).entities ()
-                .findFirst ().map (owlClass -> owlClass.getIRI ().getNamespace ())
-                .orElseThrow (() -> new IllegalStateException ("Could not determine ontology IRI namespace!"));
+                .map (e -> e.getIRI ().getNamespace ())
+                .collect (Collectors.toSet ());
 
-        System.out.println ("Loaded ontology, IRI: " + this.ontologyBaseIRI);
+        System.out.println ("Loaded ontology, IRIs: " + String.join (", ", this.ontologyBaseIRIs));
 
     }
 
@@ -78,24 +78,25 @@ public final class QueryExpansionService {
 
         Set<String> result = new HashSet<> ();
 
-        final OWLClass foundClass = this.owlDataFactory.getOWLClass (
-                IRI.create (this.ontologyBaseIRI, word)
-        );
         final Set<OWLAnnotationProperty> lookForAnnotations = Set.of (
                 this.owlDataFactory.getRDFSLabel (),
                 this.owlDataFactory.getRDFSComment ()
         );
 
         Stream.concat (
-                Stream.of (foundClass),
-                this.reasoner.getSubClasses (foundClass).entities ()
+                this.ontologyBaseIRIs.stream ()
+                        .map (iri -> this.owlDataFactory.getOWLClass (IRI.create (iri, word))),
+                this.ontologyBaseIRIs.stream ()
+                        .map (iri -> this.owlDataFactory.getOWLClass (IRI.create (iri, word)))
+                        .flatMap (c -> this.reasoner.getSubClasses (c).entities ())
         )
+                .distinct ()
                 .filter (owlClass -> !owlClass.isBuiltIn ())
                 .flatMap (
                         subClass -> Stream.concat (
                                 EntitySearcher.getAnnotations (subClass, ontology)
                                         .filter (a -> lookForAnnotations.contains (a.getProperty ()))
-                                        .map (a -> a.getValue ().toString ())
+                                        .map (a -> a.getValue ().toString ().strip ())
                                         .filter (s -> !s.contains (" ")),
                                 Stream.of (subClass.getIRI ().getRemainder ().orElse (null))
                         )
