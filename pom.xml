@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>me.bokov</groupId>
+    <artifactId>semantic-web-homework-assignment</artifactId>
+    <version>0.0.1.Snapshot</version>
+    <modules>
+        <module>indexer</module>
+        <module>search</module>
+        <module>common</module>
+    </modules>
+
+    <packaging>pom</packaging>
+
+    <properties>
+
+        <version.maven.compiler>3.8.1</version.maven.compiler>
+        <version.maven.jar>3.2.0</version.maven.jar>
+
+        <java.source>11</java.source>
+        <java.target>11</java.target>
+        <java.encoding>UTF-8</java.encoding>
+
+        <version.hermit>1.4.5.519</version.hermit>
+
+    </properties>
+
+</project>

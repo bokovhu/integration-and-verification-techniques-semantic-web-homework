@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>semantic-web-homework-assignment</artifactId>
+        <groupId>me.bokov</groupId>
+        <version>0.0.1.Snapshot</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>me.bokov.semantic-web-homework-assignment</groupId>
+    <artifactId>search</artifactId>
+
+    <properties>
+        <java.mainClass>me.bokov.homework.search.Main</java.mainClass>
+    </properties>
+
+    <packaging>jar</packaging>
+
+    <build>
+
+        <plugins>
+
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${version.maven.compiler}</version>
+                <configuration>
+                    <source>${java.source}</source>
+                    <target>${java.target}</target>
+                    <encoding>${java.encoding}</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${version.maven.jar}</version>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>me.bokov.semantic-web-homework-assignment</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sourceforge.owlapi</groupId>
+            <artifactId>org.semanticweb.hermit</artifactId>
+            <version>${version.hermit}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>
