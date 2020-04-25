@@ -95,7 +95,8 @@ public final class QueryExpansionService {
                         subClass -> Stream.concat (
                                 EntitySearcher.getAnnotations (subClass, ontology)
                                         .filter (a -> lookForAnnotations.contains (a.getProperty ()))
-                                        .map (a -> a.getValue ().toString ()),
+                                        .map (a -> a.getValue ().toString ())
+                                        .filter (s -> !s.contains (" ")),
                                 Stream.of (subClass.getIRI ().getRemainder ().orElse (null))
                         )
                 ).filter (Objects::nonNull)
