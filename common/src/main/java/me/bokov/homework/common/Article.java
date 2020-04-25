@@ -14,16 +14,16 @@ public final class Article {
         return id;
     }
 
+    public void setId (String id) {
+        this.id = id;
+    }
+
     public int getLocalId () {
         return localId;
     }
 
     public void setLocalId (int localId) {
         this.localId = localId;
-    }
-
-    public void setId (String id) {
-        this.id = id;
     }
 
     public String getCategory () {
